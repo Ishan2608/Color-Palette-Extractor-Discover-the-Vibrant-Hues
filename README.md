@@ -4,3 +4,11 @@ A simple web application built using flask. Upload an image and see the most use
 <div>
   <img src="./image_color_generator.gif" alt="Code Output">
 </div>
+
+<hr>
+<h1> Program Flowchart </h1>
+<div>
+  <img src="./Color Pallet Generator Flowchart.png" alt="Code Output">
+</div>
+
+<hr>
