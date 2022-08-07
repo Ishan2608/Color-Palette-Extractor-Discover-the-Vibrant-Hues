@@ -15,34 +15,28 @@ def give_most_hex(file_path):
     image_array = np.array(my_image)
 
     # create a dictionary of unique colors with each color's count set to 0
+    # increment count by 1 if it exists in the dictionary
     unique_colors = {}  # (r, g, b): count
     for column in image_array:
         for rgb in column:
             t_rgb = tuple(rgb)
             if t_rgb not in unique_colors:
                 unique_colors[t_rgb] = 0
-                # break
+            if t_rgb in unique_colors:
+                unique_colors[t_rgb] += 1
 
-    # add counts to colors of unique colors dictionary
-    for clrs in unique_colors:
-        for column in image_array:
-            for rgb in column:
-                t_c = tuple(rgb)
-                if t_c == clrs:
-                    unique_colors[clrs] += 1
-
-    # get a lost of top ten occurrences/counts of colors from unique colors dictionary
+    # get a list of top ten occurrences/counts of colors from unique colors dictionary
     values = set(unique_colors.values())
     values = list(values)
-    values.sort()
-    values.reverse()
+    values.sort(reverse=True)
 
-    top_10 = []
-    for i in range(10):
-        top_10.append(values[i])
+    # get only 10 highest values
+    top_10 = values[0:10]
+
+    # sorted(key_value.items(), key=lambda kv: (kv[1], kv[0]))
 
     # using a sorted dictionary
-    sorted_values = sorted(unique_colors.values())  # Sort the values
+    sorted_values = sorted(unique_colors.values())  # Sort the values. Returns a list of values
     sorted_dict = {}
 
     for i in sorted_values:
