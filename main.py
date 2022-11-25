@@ -2,7 +2,7 @@
 # his image.
 
 import numpy as np
-from PIL import Image # for reading image files
+from PIL import Image, ImageOps
 from flask import Flask, render_template, request
 
 
@@ -12,6 +12,16 @@ def rgb_to_hex(rgb):
 
 def give_most_hex(file_path):
     my_image = Image.open(file_path).convert('RGB')
+    size = my_image.size
+    if size[0] >= 400 or size[1] >= 400:
+        my_image = ImageOps.scale(image=my_image, factor=0.2)
+    elif size[0] >= 600 or size[1] >= 600:
+        my_image = ImageOps.scale(image=my_image, factor=0.4)
+    elif size[0] >= 800 or size[1] >= 800:
+        my_image = ImageOps.scale(image=my_image, factor=0.5)
+    elif size[0] >= 1200 or size[1] >= 1200:
+        my_image = ImageOps.scale(image=my_image, factor=0.6)
+    my_image = ImageOps.posterize(my_image, 2)
     image_array = np.array(my_image)
 
     # create a dictionary of unique colors with each color's count set to 0
@@ -26,39 +36,25 @@ def give_most_hex(file_path):
                 unique_colors[t_rgb] += 1
 
     # get a list of top ten occurrences/counts of colors from unique colors dictionary
-    values = set(unique_colors.values())
-    values = list(values)
-    values.sort(reverse=True)
+    sorted_unique_colors = sorted(unique_colors.items(), key=lambda x: x[1], reverse=True)
+    converted_dict = dict(sorted_unique_colors)
+    # print(converted_dict)
 
     # get only 10 highest values
+    values = list(converted_dict.keys())
+    # print(values)
     top_10 = values[0:10]
-
-    # sorted(key_value.items(), key=lambda kv: (kv[1], kv[0]))
-
-    # using a sorted dictionary
-    sorted_values = sorted(unique_colors.values())  # Sort the values. Returns a list of values
-    sorted_dict = {}
-
-    for i in sorted_values:
-        for k in unique_colors.keys():
-            if unique_colors[k] == i:
-                sorted_dict[k] = unique_colors[k]
-                break
-
-    # have a dictionary of top ten colors, with their counts.
-    dict_of_top = {}
-
-    for key in sorted_dict:
-        if sorted_dict[key] in top_10:
-            dict_of_top[key] = sorted_dict[key]
+    # print(top_10)
 
     # code to convert rgb to hex
-    hex_list = []
-    for key in dict_of_top:
-        hex = rgb_to_hex(key)
-        hex_list.append(hex)
+    # hex_list = []
+    # for key in top_10:
+    #     hex = rgb_to_hex(key)
+    #     hex_list.append(hex)
 
-    return hex_list
+    # return hex_list
+
+    return top_10
 
 
 app = Flask(__name__)
@@ -68,8 +64,8 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         f = request.files['file']
-        hexes = give_most_hex(f.stream)
-        return render_template('index.html', colors_list=hexes)
+        colours = give_most_hex(f.stream)
+        return render_template('index.html', colors_list=colours)
     return render_template('index.html')
 
 
