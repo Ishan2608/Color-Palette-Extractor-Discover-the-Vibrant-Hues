@@ -2,7 +2,7 @@
 A simple web application built using flask. Upload an image and see the most used colors in that image.
 
 <div>
-  <img src="./image_color_generator.gif" alt="Code Output">
+  <img src="./flask_image_analyzer_output.gif" alt="Code Output">
 </div>
 
 <hr>
