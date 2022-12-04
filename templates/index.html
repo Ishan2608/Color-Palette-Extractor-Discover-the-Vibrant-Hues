@@ -6,34 +6,49 @@
     <style>
         *{
             box-sizing: border-box;
+            margin: 0%;
+            padding: 0%;
         }
+
         header, form, main{
-            font-style: italic;
-            width: 90%;
-            padding: 0;
             margin: auto;
-            text-align: center;
-            font-size: 1.2rem;
-            font-family: Geneva, Helvetica;
+            width: 70%;
+            font-family: Helvetica;
+            padding: 1.5rem 1.1rem;
         }
+
+        header > h1{
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
         header > p{
             color: gray;
+            font-size: 1.2rem;
         }
 
         form{
-            padding: 10px;
-            background-color: khaki;
+            background-color: skyblue;
         }
-        input[type='submit']{
-            font-size: 20px;
-            padding-right: 1.1%;
-            padding-left: 1.1%;
-            border-radius: 10%;
+
+        input{
+            margin: 10px 0;
+        }
+
+        input[type='submit'], input[type='file']{
+            font-size: 1.2rem;
+        }
+
+        input:hover{
             cursor: pointer;
         }
-        input[type='file']{
-            font-size: 18px;
-            padding: 1%;
+
+        input[type='submit']{
+            padding: 0.5rem 0.8rem;
+            border: 2px solid #003333;
+            background-color: #003333;
+            color: white;
+            border-radius: 4px;
         }
 
         .pair{
@@ -62,21 +77,31 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to Image Analyzer</h1>
+        <h1>Welcome to Image Colour Palette Generator</h1>
         <p>
             Upload an image and this site will tell you the top 10 most used colors along with their hex codes.
             If two colors appear same number of times, both will be shown here.
         </p>
     </header>
     <form action = "/" method = "POST" enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit"/>
+        <input type = "file" name = "file" />
+        <br>
+        Select a Colour Code:
+        <input type="radio" name="colour_code" value="rgb">RGB
+        <input type="radio" name="colour_code" value="hex">Hex
+        <br>
+        <input type = "submit"/>
     </form>
     <main>
         {% for i in range(colors_list|length) %}
             <div class="pair">
-                <div class="color-box" style="background-color: rgb{{ colors_list[i] }};"></div>
-                <div class="color-box-value"> {{i+1}}:-   rgb{{colors_list[i]}}</div>
+                {% if code != 'hex': %}
+                    <div class="color-box" style="background-color: rgb{{ colors_list[i] }};"></div>
+                    <div class="color-box-value"> {{i+1}}:-   rgb{{colors_list[i]}}</div>
+                {% else: %}
+                    <div class="color-box" style="background-color: #{{ colors_list[i] }};"></div>
+                    <div class="color-box-value"> {{i+1}}:-   #{{colors_list[i]}}</div>
+                {% endif %}
             </div>
         {% endfor %}
     </main>
