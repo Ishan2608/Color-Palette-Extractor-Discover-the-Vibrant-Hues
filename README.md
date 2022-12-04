@@ -4,6 +4,3 @@ A simple web application built using flask. Upload an image and see the most use
 <div>
   <img src="./flask-image-colour-palette-generator.gif" alt="Code Output">
 </div>
-
-<hr>
-
