@@ -14,7 +14,7 @@
             margin: auto;
             width: 70%;
             font-family: Helvetica;
-            padding: 1.5rem 1.1rem;
+            padding: 1.1rem 1.2rem;
         }
 
         header > h1{
@@ -51,6 +51,10 @@
             border-radius: 4px;
         }
 
+        main{
+            padding: 0;
+        }
+
         .pair{
             width: 100%;
             display: flex;
@@ -84,7 +88,7 @@
         </p>
     </header>
     <form action = "/" method = "POST" enctype = "multipart/form-data">
-        <input type = "file" name = "file" />
+        <input type = "file" name = "file" required />
         <br>
         Select a Colour Code:
         <input type="radio" name="colour_code" value="rgb">RGB
@@ -97,10 +101,10 @@
             <div class="pair">
                 {% if code != 'hex': %}
                     <div class="color-box" style="background-color: rgb{{ colors_list[i] }};"></div>
-                    <div class="color-box-value"> {{i+1}}:-   rgb{{colors_list[i]}}</div>
+                    <div class="color-box-value"> {{i+1}}:  rgb{{colors_list[i]}}</div>
                 {% else: %}
                     <div class="color-box" style="background-color: #{{ colors_list[i] }};"></div>
-                    <div class="color-box-value"> {{i+1}}:-   #{{colors_list[i]}}</div>
+                    <div class="color-box-value"> {{i+1}}:   #{{colors_list[i]}}</div>
                 {% endif %}
             </div>
         {% endfor %}
