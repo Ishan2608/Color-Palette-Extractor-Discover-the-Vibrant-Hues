@@ -10,7 +10,7 @@ def rgb_to_hex(rgb):
     return '%02x%02x%02x' % rgb
 
 
-def give_most_hex(file_path):
+def give_most_hex(file_path, code):
     my_image = Image.open(file_path).convert('RGB')
     size = my_image.size
     if size[0] >= 400 or size[1] >= 400:
@@ -47,14 +47,14 @@ def give_most_hex(file_path):
     # print(top_10)
 
     # code to convert rgb to hex
-    # hex_list = []
-    # for key in top_10:
-    #     hex = rgb_to_hex(key)
-    #     hex_list.append(hex)
-
-    # return hex_list
-
-    return top_10
+    if code == 'hex':
+        hex_list = []
+        for key in top_10:
+            hex = rgb_to_hex(key)
+            hex_list.append(hex)
+        return hex_list
+    else:
+        return top_10
 
 
 app = Flask(__name__)
@@ -64,8 +64,9 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         f = request.files['file']
-        colours = give_most_hex(f.stream)
-        return render_template('index.html', colors_list=colours)
+        colour_code = request.form['colour_code']
+        colours = give_most_hex(f.stream, colour_code)
+        return render_template('index.html', colors_list=colours, code=colour_code)
     return render_template('index.html')
 
 
